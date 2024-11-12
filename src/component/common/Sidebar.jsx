@@ -40,8 +40,9 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-1/5 bg-gray-100 text-white flex flex-col max-h-screen pt-5  ">
-      <nav className="flex-1 px-6 py-4 fixed bg-gray-100">
+    <div className="w-1/5 bg-gray-100 text-white flex flex-col min-h-screen pt-5   border-r-2 border-blue-950
+    ">
+      <nav className="flex-1 px-6 py-4 fixed bg-gray-100   ">
         <ul >
           {/* Render for Student */}
           {user.accountType === "Student" && (
@@ -50,7 +51,7 @@ const Sidebar = () => {
               <Link to="dashboard/recentjob">
                 <li className="mb-3">
                   <div
-                    className="flex items-center cursor-pointer text-gray-400 hover:text-white transition-all"
+                    className="flex items-center cursor-pointer text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1 transition-all"
                   >
                     <MdDashboard className="mr-3 text-xl" />
                     <span className="hidden md:inline">New Openings</span>
@@ -61,7 +62,7 @@ const Sidebar = () => {
               <Link to="/dashboard/calender">
                 <li className="mb-3">
                   <div
-                    className="flex items-center cursor-pointer text-gray-400 hover:text-white"
+                    className="flex items-center cursor-pointer text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1"
                     onClick={() => {
                       toggleDropdown(1);
                       setUpDown(!upDown);
@@ -76,7 +77,7 @@ const Sidebar = () => {
               <Link to="/dashboard/appliedjob">
                 <li className="mb-3">
                   <div
-                    className="flex items-center cursor-pointer text-gray-400 hover:text-white"
+                    className="flex items-center cursor-pointer  text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1"
                     onClick={() => toggleDropdown(2)}
                   >
                     <FaTable className="mr-3 text-xl" />
@@ -87,7 +88,7 @@ const Sidebar = () => {
 
               <li className="mb-3">
                 <div
-                  className="flex items-center cursor-pointer text-gray-400 hover:text-white"
+                  className="flex items-center cursor-pointer  text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1"
                   onClick={() => {
                     toggleDropdown(3);
                     setUpDown(!upDown);
@@ -192,7 +193,7 @@ const Sidebar = () => {
               </li>
               <Link to="/dashboard/curracademics">
                 <li className="mb-3">
-                  <div className="flex items-center cursor-pointer text-gray-400 hover:text-black">
+                  <div className="flex items-center cursor-pointer  text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1">
                     <HiAcademicCap className="mr-3 text-xl" />
                     <span className="hidden md:inline">Current Academics</span>
                   </div>
@@ -201,7 +202,7 @@ const Sidebar = () => {
 
               <Link to="/dashboard/uploadresume">
                 <li className="mb-3">
-                  <div className="flex items-center cursor-pointer text-gray-400 hover:text-white">
+                  <div className="flex items-center cursor-pointer  text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1">
                     <FaExclamationTriangle className="mr-3 text-xl" />
                     <span className="hidden md:inline">Upload Additional Resume</span>
                   </div>
@@ -210,7 +211,7 @@ const Sidebar = () => {
 
               <Link to="/dashboard/uploadLetter">
                 <li className="mb-3">
-                  <div className="flex items-center cursor-pointer text-gray-400 hover:text-white">
+                  <div className="flex items-center cursor-pointer  text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1">
                     <IoCloudUploadSharp className="mr-3 text-xl" />
                     <span className="hidden md:inline">Upload Offer Letter</span>
                   </div>
@@ -290,7 +291,7 @@ const Sidebar = () => {
           {/* Common to all users */}
           <Link to="dashboard/profile">
             <li className="mb-3">
-              <div className="flex items-center cursor-pointer text-gray-400 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1">
+              <div className="flex items-center cursor-pointer  text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1">
                 <IoPersonOutline className="mr-3 text-xl" />
                 <span className="hidden md:inline">Manage Profile</span>
               </div>
@@ -299,7 +300,7 @@ const Sidebar = () => {
 
           <Link to="/dashboard/help">
             <li className="mb-3">
-              <div className="flex items-center cursor-pointer text-gray-400 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1">
+              <div className="flex items-center cursor-pointer  text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1">
                 <FaHandsHelping className="mr-3 text-xl" />
                 <span className="hidden md:inline">Help Desk</span>
               </div>
@@ -309,7 +310,7 @@ const Sidebar = () => {
           <li className="mb-3">
             <button  onClick={() => {
               dispatch(logout(navigate));
-            }} className="flex items-center cursor-pointer w-full text-gray-400 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1">
+            }} className="flex items-center cursor-pointer w-full  text-gray-600 hover:text-blue-950 hover:border-b-2 border-blue-950 p-1 transition-all ">
               <IoLogOutSharp className="mr-3 text-xl" />
               <span className="hidden md:inline">Sign Out</span>
             </button>

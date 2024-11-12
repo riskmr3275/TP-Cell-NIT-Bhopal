@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { setLoading, setToken } from "../../slices/authSlices";
+import { setLoading, setToken } from "../../slices/appliedJobSlice";
 import { setJobData } from "../../slices/jobSlices";
 import { setAppliedJobData } from "../../slices/appliedJobSlice";
 import { apiConnector } from "../apiconnector";
@@ -29,7 +29,7 @@ export function fetchJobPosts(navigate, token) {
       // Check for valid response
       if (response?.data?.success) {
         dispatch(setJobData(response.data.data)); // Set job data in redux state
-        toast.success("Job Post Fetched Successfully");
+        // toast.success("Job Post Fetched Successfully");
 
         // localStorage.setItem("job", JSON.stringify(response.data.data));
       } else {

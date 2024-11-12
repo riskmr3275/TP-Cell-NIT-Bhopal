@@ -44,10 +44,10 @@ const JobCard = ({ job }) => {
             <div className="flex flex-col items-end text-center gap-2">
               <p className="text-sm text-gray-600 mb-1 font-semibold border-2 p-2">Location: {job.location}</p>
               <button
-                className="w-max px-4 py-1 bg-blue-950 text-white text-sm rounded font-semibold hover:bg-blue-900 transition duration-300"
+                className="w-max px-4 py-2 bg-blue-950 text-white text-sm rounded font-semibold hover:bg-blue-900 transition duration-300"
                 onClick={handleApplyNowClick}
               >
-                Apply Now
+                Easy Apply
               </button>
             </div>
           </div>

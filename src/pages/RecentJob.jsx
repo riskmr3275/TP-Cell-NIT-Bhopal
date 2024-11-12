@@ -33,7 +33,7 @@ console.log('jobDTA',jobData);
   };
 
   return (
-    <div className="flex w-full bg-gray-100">
+    <div className="flex w-full bg-gray-100 mt-5 ">
       <div className="w-full p-4">
         <div className="flex justify-between mb-4">
           <input

@@ -6,8 +6,8 @@ const RecruiterInfoPage = () => {
       {/* Header Section */}
       <header className="text-center mb-12">
       
-        <p className="text-xl text-gray-600 mt-4">
-          Empowering students with diverse skills and industry-ready education.
+        <p className="text-4xl  text-gray-600 mt-4 font-semibold">
+          Empowering students with diverse skills and industry-ready education
         </p>
       </header>
 

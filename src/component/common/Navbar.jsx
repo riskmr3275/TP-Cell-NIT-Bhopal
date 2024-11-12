@@ -25,11 +25,13 @@ const Navbar = () => {
         <div className="flex items-center justify-between px-4 py-3">
           {/* Logo and Title Section */}
           <div className="flex items-center space-x-4">
-            <img
+           <Link to="/">
+           <img
               src="../src/assets/logo.png"
               alt="MANIT Logo"
               className="w-16 h-16 md:w-20 md:h-20 object-contain"
             />
+           </Link>
             <div className="text-center md:text-left">
               <h1 className="text-lg md:text-2xl font-extrabold font-serif">
                 Training and Placement Cell
