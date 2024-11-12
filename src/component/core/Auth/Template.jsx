@@ -8,7 +8,7 @@ function Template({ title, description1, description2, image, formType }) {
   const { loading } = useSelector((state) => state.auth)
 
   return (
-    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
+    <div className="grid min-h-screen place-items-center">
       {loading ? (
         <div className="spinner"></div>
       ) : (
@@ -25,9 +25,9 @@ function Template({ title, description1, description2, image, formType }) {
             </p>
             {formType === "signup" ? <SignupForm /> : <LoginForm />}
           </div>
-          <div className="relative mx-0 w-11/12 max-w-[1000px] md:mx-10">
+          <div className="relative mx-0 w-[50%]  md:mx-10">
             <img
-              src="https://tse2.mm.bing.net/th?id=OIP.e9fc_b6SyeTTvOgeWa8AWQHaD3&pid=Api&P=0&h=180"
+              src={image}
               alt="Pattern"
               className="w-full h-full mr-0 " // Increase image size on larger screens
               loading="lazy"

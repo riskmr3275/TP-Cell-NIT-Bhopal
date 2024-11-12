@@ -16,7 +16,8 @@ export default function EnhancedOurTeamWithContacts() {
       photo: RisuPic,
       about:
         "Dedicated software developer pursuing a Master of Computer Applications at NIT Bhopal, with expertise in C++, JavaScript,and SQL. Experienced in full-stack development, demonstrated through projects such as an Online Learning Platform and aTraining and Placement Cell automation system. These projects highlight my ability to design, develop, and deploy scalable solutions while addressing complex technical challenges. I am committed to applying my skills to create innovative and impactful software solutions.",
-      skills: ["JavaScript", "React", "Node.js", "AWS", "System Architecture"],
+      skills: ["C++","JavaScript","NodeJS", "ExpressJS", "ReactJS","MongoDB", "HTML", "DOCKER", "Tailwind",
+        "CSS", "REST API", "Git", "GitHub", "Postman","postgres","open source"],
 
       email: "riskmr3275@gmail.com",
       phone: "+91 9798571703",

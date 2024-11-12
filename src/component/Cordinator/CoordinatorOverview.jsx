@@ -137,7 +137,7 @@ export default function CoordinatorOverview() {
   console.log(upcomingInterviews);
 
   return (
-    <div className="min-h-screen  bg-white w-full">
+    <div className="min-h-screen  bg-white w-full mt-5">
       <main className=" flex flex-col  h-screen   w-full space-y-6">
         {/* Key Metrics Section */}
         <section className="mb-8 grid gap-4 md:grid-cols-3 lg:grid-cols-4 p-5 ">
@@ -237,13 +237,13 @@ export default function CoordinatorOverview() {
       </Button>
 
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-gray-800 max-w-md w-full p-6 rounded-lg text-white relative">
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50 z-50 w-full">
+          <div className="bg-gray-800  w-[50%] p-6 rounded-lg text-white relative ">
             <button
               onClick={closeModal}
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-200"
+              className="absolute top-2 right-6 text-white hover:text-gray-100 text-xl"
             >
-              &times;
+             Cancel
             </button>
             <h2 className="text-2xl font-semibold text-center mb-2">Company Details</h2>
             <p className="text-gray-400 text-center mb-6">Please fill in the company information below.</p>
@@ -303,9 +303,9 @@ export default function CoordinatorOverview() {
 
               <button
                 type="submit"
-                className="mt-4 w-full p-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                className="mt-4 min-w-min p-2 rounded bg-blue-800 hover:bg-blue-700 text-white font-semibold"
               >
-                Submit
+                Schedule
               </button>
             </form>
           </div>
