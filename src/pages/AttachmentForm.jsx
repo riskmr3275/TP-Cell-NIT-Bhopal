@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const AttachmentForm = () => {
   const [documentTitle, setDocumentTitle] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
-
+  const {user}=useSelector((state)=>state.profile);
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
@@ -22,7 +23,7 @@ const AttachmentForm = () => {
       <div className="flex-1 p-10 w-full">
         {/* Header */}
         <header className="bg-blue-400 rounded-md shadow-xl  py-4 px-6 mb-8 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white b">Welcome Sonam Mishra</h1>
+          <h1 className="text-2xl font-bold text-white b">Welcome {user.name}</h1>
           
         </header>
 

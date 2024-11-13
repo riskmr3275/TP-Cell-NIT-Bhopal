@@ -100,7 +100,7 @@ export function signUp(
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export function login(email, password, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...");
+    
     dispatch(setLoading(true));
 
     try {
@@ -136,7 +136,7 @@ export function login(email, password, navigate) {
       toast.error(error.response.data.message);
     }
     dispatch(setLoading(false));
-    toast.dismiss(toastId);
+    
   };
 }
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

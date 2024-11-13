@@ -24,7 +24,7 @@ const SkillsForm = () => {
     <div className="flex justify-center mt-10 w-full bg-gray-100">
       <div className="w-full ">
         {/* Welcome Section */}
-        <h2 className="text-lg font-bold  mb-4 bg-blue-400 text-white p-4 shadow-xl">Welcome Sonam Mishra</h2>
+        <h2 className="text-lg font-bold  mb-4 bg-blue-400 text-white p-4 shadow-xl">Welcome </h2>
 
         {/* Skills Form */}
         <div className=" shadow-2xl   rounded-lg p-10 ">

@@ -6,7 +6,7 @@ const AcademicDashboard = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen w-full">
       <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-lg font-semibold mb-4">Welcome Sonam {user?.name}</h2>
+        <h2 className="text-lg font-semibold mb-4">Welcome  {user?.name}</h2>
 
         {/* Current Academics Section */}
         <div className="bg-blue-400 text-white  p-3 rounded-t-lg">

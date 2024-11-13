@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 const ResumeUpload = () => {
   const [resumes, setResumes] = useState([
-    { title: 'Sonamresu2', date: '19.Jul.2024 01:00 AM' },
-    { title: 'Finalresume1sonam', date: '03.Sep.2024 15:23 PM' },
+    { title: 'User123', date: '19.Jul.2024 01:00 AM' },
+    { title: 'Finalresume1', date: '03.Sep.2024 15:23 PM' },
     { title: 'Placmentresum2', date: '04.Sep.2024 05:35 AM' },
   ]);
 
