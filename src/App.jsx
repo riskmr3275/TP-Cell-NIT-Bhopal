@@ -99,7 +99,7 @@ function App() {
                 element={<CompanyManagement />}
               />
               <Route
-                path="dashboard/companymanagement/viewOpening"
+                path="dashboard/companymanagement/viewOpening/:companyId"
                 element={<JobPostingsList />}
               />
               <Route

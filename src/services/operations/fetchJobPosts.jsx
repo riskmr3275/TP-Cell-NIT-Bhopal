@@ -74,6 +74,7 @@ export function ApllyJob(navigate, job_id, token) {
         toast.success(response.data.message);
       } else {
         throw new Error(
+          
           response?.data?.message || "You have already applied for this job"
         );
       }

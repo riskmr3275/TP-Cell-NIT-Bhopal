@@ -30,7 +30,7 @@ exports.auth = async(req, res, next) => {
             if (error.name === 'JsonWebTokenError') {
                 return res.status(401).json({
                     success: false,
-                    message: "Token is invalid",
+                    message: "Token is invalid", 
                     error: error.message
                 });
             } else if (error.name === 'TokenExpiredError') {
