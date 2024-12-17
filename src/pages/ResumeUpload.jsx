@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useSelector } from 'react-redux';
 const ResumeUpload = () => {
   const [resumes, setResumes] = useState([
     { title: 'User123', date: '19.Jul.2024 01:00 AM' },
@@ -10,10 +10,10 @@ const ResumeUpload = () => {
   const handleDelete = (index) => {
     setResumes(resumes.filter((_, i) => i !== index));
   };
-
+const { user } = useSelector((state) => state.profile);
   return (
     <div className="p-4 w-full bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4 bg-blue-400 p-4 text-white rounded-md shadow-xl">Welcome Sonam Mishra</h1>
+      <h1 className="text-2xl font-bold mb-4 bg-blue-400 p-4 text-white rounded-md shadow-xl">Welcome {user.name}</h1>
       
       {/* Upload Additional Resume Section */}
       <div className="border-2 border-blue-300 p-4 mb-6">

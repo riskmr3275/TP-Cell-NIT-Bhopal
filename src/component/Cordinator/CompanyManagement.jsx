@@ -98,9 +98,9 @@ function CompanyManagement() {
                 <div className="bg-gray-800 w-[50%] p-6 rounded-lg text-white relative">
                   <button
                     onClick={closeModal}
-                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-200"
+                    className="absolute top-6 right-6 text-gray-400 hover:text-gray-200"
                   >
-                    &times;
+                     cancel
                   </button>
                   <h2 className="text-2xl font-semibold text-center mb-2">
                     Company Details

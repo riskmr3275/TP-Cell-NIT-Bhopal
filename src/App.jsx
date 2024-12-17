@@ -13,7 +13,6 @@ import OpenRoute from "./component/core/Auth/OpenRoute";
 import PrivateRoute from "./component/core/Auth/PrivateRoute";
 import Calender from "./pages/Calender";
 import RecentJob from "./pages/RecentJob";
-//  import {Notification} from "./component/core/Auth/Notification"
 import JobAppliedList from "./component/common/JobAppliedList";
 import Profile from "./pages/Profile";
 import AcademicDashboard from "./pages/AcademicDashboard ";
@@ -119,9 +118,7 @@ function App() {
                 element={<StudentProfile />}
               />
             </Route>
-
-            {/* Add more routes as needed */}
-          </Routes>
+           </Routes>
         </div>
       </div>
     </div>

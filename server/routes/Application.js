@@ -5,11 +5,13 @@ const {auth,isCordinator,isAdmin}=require("../middlewares/auth")
 const {
     getAllAplication,
     getAllInterviewSchedule,
-    applicationForCord
-     
+    applicationForCord,
+    getAllAplicationsByJobId,
 } = require("../controllers/Application");
 
 router.post("/applicationForCord",auth,isCordinator, applicationForCord);
+router.post("/getAllAplicationsByJobId",auth,isCordinator, getAllAplicationsByJobId);
+
 router.get("/getAllAplication", getAllAplication);
 router.get("/getAllInterviewSchedule", getAllInterviewSchedule);
  

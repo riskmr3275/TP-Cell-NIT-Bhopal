@@ -41,3 +41,26 @@ exports.applicationForCord = async (req, res) => {
         res.status(500).json({ success: false, message: 'Error scheduling interview', error });
     }
 }   // Schedule an interview
+
+
+
+exports.getAllAplicationsByJobId = async (req, res) => {
+    const {id}  = req.body;  // Get company_id from the request body
+    let connection;
+    try {
+        connection = await connect();  // Establish a connection to the database
+        const [results] = await connection.execute("SELECT ap.*, us.* FROM applications AS ap INNER JOIN users AS us ON ap.student_id = us.user_id WHERE ap.job_id = ?", [id]);
+        await connection.end();  // Close the connection
+        res.status(200).json({
+            success: true,
+            data: results,
+            message: "Fetch all data success"
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error retrieving applications',
+            error
+        });
+    }
+};

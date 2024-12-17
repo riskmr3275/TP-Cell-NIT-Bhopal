@@ -75,7 +75,7 @@ export function ApllyJob(navigate, job_id, token) {
       } else {
         throw new Error(
           
-          response?.data?.message || "You have already applied for this job"
+           toast.error(response?.data?.message || "Failed to apply for job")
         );
       }
     } catch (error) {
@@ -85,6 +85,8 @@ export function ApllyJob(navigate, job_id, token) {
         toast.error(error.response.data.message);
         navigate("/dashboard/recentjob"); // Navigate to login if unauthorized
       } else {
+        console.log("Error", error.response.data.message);
+        
         toast.error("You have already applied for this job");
       }
     } finally {
