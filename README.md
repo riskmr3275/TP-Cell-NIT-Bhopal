@@ -31,3 +31,5 @@ The T&P Cell project for MANIT is an essential initiative that will modernize an
 
  
  
+
+ postgresql://TPDB_owner:npg_e9PItoSvUCO8@ep-black-butterfly-a56m96d0-pooler.us-east-2.aws.neon.tech/TPDB?sslmode=require
