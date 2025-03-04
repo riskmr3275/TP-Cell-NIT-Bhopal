@@ -29,7 +29,4 @@ The successful implementation of the T&P Cell project will have a significant im
 6. Conclusion
 The T&P Cell project for MANIT is an essential initiative that will modernize and improve the placement process at the institute. By leveraging technology, the project aims to provide students with better training and placement opportunities, while also simplifying the recruitment process for companies. The project is expected to have a lasting impact on the career prospects of students at MANIT, helping them to secure rewarding jobs and internships that align with their skills and aspirations.
 
- 
- 
-
- postgresql://TPDB_owner:npg_e9PItoSvUCO8@ep-black-butterfly-a56m96d0-pooler.us-east-2.aws.neon.tech/TPDB?sslmode=require
+Link:-  https://tp-cell-nit-bhopal-india-qc8q6a8ii-risu-guptas-projects.vercel.app/
