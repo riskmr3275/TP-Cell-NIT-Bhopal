@@ -3,16 +3,16 @@ const router = express.Router();
 const {auth,isCordinator,isAdmin}=require("../middlewares/auth")
 
 const {
-    getAllAplication,
+    getAllApplications,
     getAllInterviewSchedule,
     applicationForCord,
-    getAllAplicationsByJobId,
+    getAllApplicationsByJobId,
 } = require("../controllers/Application");
 
 router.post("/applicationForCord",auth,isCordinator, applicationForCord);
-router.post("/getAllAplicationsByJobId",auth,isCordinator, getAllAplicationsByJobId);
+router.post("/getAllAplicationsByJobId",auth,isCordinator, getAllApplicationsByJobId);
 
-router.get("/getAllAplication", getAllAplication);
+router.get("/getAllAplication",auth, getAllApplications);
 router.get("/getAllInterviewSchedule", getAllInterviewSchedule);
  
  

@@ -50,7 +50,7 @@ const Navbar = () => {
               { label: 'For Recruiters', path: '/ForRecruiters' },
               { label: 'Placement Statistics', path: '/PlacementStatistics' },
               { label: 'About', path: '/AboutUs' },
-              { label: 'Our Team', path: '/ourTeam' },
+              // { label: 'Our Team', path: '/ourTeam' },
               
             ].map((link, index) => (
               <li key={index} className="text-base md:text-lg font-medium relative">
@@ -60,9 +60,9 @@ const Navbar = () => {
                 >
                   {link.label}
                 </Link>
-              </li>
+              </li> 
             ))}
-          </ul>
+          </ul>  
 
           {/* User Actions */}
           <div className="hidden md:flex items-center gap-6">

@@ -8,8 +8,7 @@ const {
     updateProfile,
     getAllUserDetails,
     updateDisplayPicture,
-    // getEnrolledCourses,
-    // instructorDashboard,
+     
   } = require("../controllers/Profile")
 
 

@@ -1,188 +1,109 @@
-const { connect } = require("../config/database");
 const { uploadMediaToCloudinary } = require("../utils/mediaUploader");
-const mailSender  = require("../utils/mailSender");  
-const {ProfilePicUpdate} = require("../Mail/Template/ProfilePicUpdate");
+const mailSender = require("../utils/mailSender");
+const { ProfilePicUpdate } = require("../Mail/Template/ProfilePicUpdate");
+const { pool } = require("../config/database");
 
-
-// +++++++++++++++Profle update ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+// +++++++++++++++Profile update ++++++++++++++++++++++++++++++++++++++++++++++++++
 exports.updateProfile = async (req, res) => {
     try {
-        // Get data from request body
         const { s_dob = "", s_contact = "", s_city = "", s_state = "", gender = "", about = "" } = req.body;
-
-        // Get user id from request (assuming req.user contains authenticated user's info)
         const id = req.user.id;
 
-        // Connect to the database
-        const connection = await connect();
+        const client = await pool.connect();
+        const userQuery = "SELECT * FROM student_details WHERE s_id = $1";
+        const userResult = await client.query(userQuery, [id]);
 
-        // Find user details using SQL
-        const [userRows] = await connection.execute('SELECT * FROM student_details WHERE s_id = ?', [id]);
-        if (userRows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
+        if (userResult.rows.length === 0) {
+            client.release();
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // Update user details
-        const updateUserQuery = `
+        const updateQuery = `
             UPDATE student_details
-            SET s_dob = ?, s_contact = ?, s_city = ? ,s_state=?, gender=?, about=?
-            WHERE s_id = ?`;
-        const [updateRow] = await connection.execute(updateUserQuery, [s_dob, s_contact, s_city, s_state, gender, about, id]);
+            SET s_dob = $1, s_contact = $2, s_city = $3, s_state = $4, gender = $5, about = $6
+            WHERE s_id = $7`;
+        await client.query(updateQuery, [s_dob, s_contact, s_city, s_state, gender, about, id]);
+        client.release();
 
-        // Return response
-        if (updateRow.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "Profile not found"
-            });
-        }
-        await connection.end();
-        // Return response
-        return res.status(200).json({
-            success: true,
-            message: "Profile updated successfully",
-            User:id,
-            additionalDetails: req.body
-        });
-
+        return res.status(200).json({ success: true, message: "Profile updated successfully", User: id, additionalDetails: req.body });
     } catch (error) {
         console.error("Error updating profile: ", error);
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
+        return res.status(500).json({ success: false, message: error.message });
     }
 };
 
-
 // ++++++++++++++Delete Account++++++++++++++++++++++++++++++++++++
-
 exports.deleteAccount = async (req, res) => {
-    let connection;
     try {
-        connection=await connect();
-        // get id
-        const id = req.body.id || req.user.id
-        // find user
-        const [userRows] = await connection.execute('SELECT * FROM student_details WHERE s_id = ?', [id]);
-        if (userRows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
-        }
-        // delete the profile
-       const [response]= await connection.execute('DELETE FROM student_details WHERE s_id = ?', [id]);   
-        if(response.affectedRows===0){
-            res.status(404).json({
-                success:false,
-                message:"Profile not found",
-            })
-        }
-        await connection.end(); 
-        //  // return response
-        return res.status(200).json({
-            success: true,
-            message: "Account delete successfully"
-        })
-    } catch (error) {
-        console.error("Error delete Account: ", error);
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+        const id = req.body.id || req.user.id;
+        const client = await pool.connect();
 
+        const userQuery = "SELECT * FROM student_details WHERE s_id = $1";
+        const userResult = await client.query(userQuery, [id]);
+        if (userResult.rows.length === 0) {
+            client.release();
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        const deleteQuery = "DELETE FROM student_details WHERE s_id = $1";
+        await client.query(deleteQuery, [id]);
+        client.release();
+
+        return res.status(200).json({ success: true, message: "Account deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting account: ", error);
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// ++++++++++++++Get All User Details++++++++++++++++++++++++++++++++++++++++++++++
 exports.getAllUserDetails = async (req, res) => {
-    let connection
     try {
         const id = req.user.id;
-        connection=await connect();
-        const [userRows] = await connection.execute('SELECT * FROM student_details WHERE s_id = ?', [id]);
-        if (userRows.affectedRows === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
+        const client = await pool.connect();
+
+        const userQuery = "SELECT * FROM student_details WHERE s_id = $1";
+        const userResult = await client.query(userQuery, [id]);
+        client.release();
+
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ success: false, message: "User not found" });
         }
-        await connection.end();
-        return res.status(200).json({
-            success: true,
-            message: "User Details fetch Successfully",
-            data:userRows
-        })
+        return res.status(200).json({ success: true, message: "User details fetched successfully", data: userResult.rows[0] });
     } catch (error) {
-        console.error("Error getAllUserdatail: ", error);
-        return res.status(500).json({
-            success: false,
-            message: "User not found"
-        });
+        console.error("Error fetching user details: ", error);
+        return res.status(500).json({ success: false, message: "User not found" });
     }
-}
+};
 
+// ++++++++++++++Update Display Picture++++++++++++++++++++++++++++++++++++++++++++++
 exports.updateDisplayPicture = async (req, res) => {
-    let connection;
-    try { 
-        // Fetch account and image URL from request
-        const imageUrl = req.files.displayPicture; // Assuming imageUrl is sent in the body
+    try {
+        const imageUrl = req.files.displayPicture;
         const id = req.user.id;
-        console.log("image:::", imageUrl);
-        console.log("id", id);
-        
-        // Validate inputs
+
         if (!imageUrl || !id) {
-            return res.status(400).json({
-                success: false,
-                message: "Please upload the image or all fields are required."
-            });
-        } 
-      
-        // Fetch user details
-        connection=await connect();
-        const [userRows] = await connection.execute('SELECT * FROM users WHERE user_id = ?', [id]);
-        if (userRows.affectedRows === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
+            return res.status(400).json({ success: false, message: "Please upload the image or all fields are required." });
         }
 
-        // Upload image to Cloudinary (assuming uploadImageToCloudinary is an async function)
-        const finalImageUrl = await uploadMediaToCloudinary(imageUrl, process.env.FOLDER_NAME,
-            1000,
-            1000);
- 
-        const updateUserQuery = `
-            UPDATE users
-            SET photo_url = ?
-            WHERE user_id = ?`;
-        const [updateRow] = await connection.execute(updateUserQuery, [finalImageUrl.secure_url, id]);
-        if(updateRow.affectedRows===0){ 
-            res.status(404).json({
-                success:false,
-                message:"Can not update right now"
-            })
-        }
-        await connection.end();
-        await mailSender(req.user.email, "Update Successfully", ProfilePicUpdate())
-        res.send({
-            success: true,
-            message: `Image Updated successfully`,
-            imageUrl: finalImageUrl.secure_url  
-        })
+        const client = await pool.connect();
+        const userQuery = "SELECT * FROM users WHERE user_id = $1";
+        const userResult = await client.query(userQuery, [id]);
 
+        if (userResult.rows.length === 0) {
+            client.release();
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        const finalImageUrl = await uploadMediaToCloudinary(imageUrl, process.env.FOLDER_NAME, 1000, 1000);
+        const updateQuery = "UPDATE users SET photo_url = $1 WHERE user_id = $2";
+        await client.query(updateQuery, [finalImageUrl.secure_url, id]);
+        client.release();
+
+        await mailSender(req.user.email, "Update Successfully", ProfilePicUpdate());
+        return res.status(200).json({ success: true, message: "Image updated successfully", imageUrl: finalImageUrl.secure_url });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({
-            success: false,
-            message: "Can't upload image right now, try again later.",
-            error: error.message
-        });
+        return res.status(500).json({ success: false, message: "Can't upload image right now, try again later.", error: error.message });
     }
 };

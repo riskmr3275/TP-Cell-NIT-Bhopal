@@ -39,7 +39,7 @@ router.post("/signup", signup)
 
 // Route for sending OTP to the user's email
 router.post("/sendotp", sendOtp)
-
+  
 // // Route for Changing the password
 router.post("/changepassword", auth, changePassword)
 
@@ -52,4 +52,4 @@ router.post("/reset-password-token", resetPasswordToken)
 
 
 // Export the router for use in the main application
-module.exports = router
+module.exports = router   

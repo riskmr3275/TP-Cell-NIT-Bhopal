@@ -12,9 +12,9 @@ const {getAllJobListings,getJobListingById,postJoblistings,updateJobListingById,
 router.get("/getAllJoblistings",auth,getAllJobListings);
 router.get("/getJob",getJob);  
 // GET a specific job listing by ID
-router.get("/getJobListingById/:id", getJobListingById);
+router.get("/getJobListingById",auth, getJobListingById);
 // Post Job Listing
-router.post("/postJoblistings",auth ,isAdmin||isCordinator, postJoblistings);
+router.post("/postJoblistings",auth ,isCordinator, postJoblistings);
 // PUT (update) an existing job listing by id
 
 router.put("/updateJobListingById/:id", updateJobListingById);

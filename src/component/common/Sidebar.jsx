@@ -45,7 +45,7 @@ const Sidebar = () => {
       <nav className="flex-1 px-6 py-4 fixed bg-gray-100   ">
         <ul >
           {/* Render for Student */}
-          {user.accountType === "Student" && (
+          {user.account_type === "Student" && (
             <>
               {/* Student Menu Items */}
               <Link to="dashboard/recentjob">
@@ -221,7 +221,7 @@ const Sidebar = () => {
           )}
 
           {/* Render for Coordinator (TPR) */}
-          {user.accountType === "Coordinator" && (
+          {user.account_type === "Coordinator" && (
             <>
               <Link to="/dashboard/overview">
                 <li className="mb-3">

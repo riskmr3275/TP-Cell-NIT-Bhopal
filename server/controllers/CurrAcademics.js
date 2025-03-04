@@ -1,6 +1,7 @@
-const { connect } = require('../config/database');
-const poolPromise = connect(); // Assuming this returns a connection pool
+// const { connect } = require('../config/database');
+// const poolPromise = connect(); // Assuming this returns a connection pool
 const { uploadMediaToCloudinary } = require("../utils/mediaUploader");
+const { connect,pool,query } = require('../config/database');
 
 // Upload Resume Route
 exports.uploadResume = async (req, res) => {
@@ -11,7 +12,7 @@ exports.uploadResume = async (req, res) => {
 
         // Validate inputs
         if (!resumeFile || !user_id) {
-            return res.status(400).json({
+            return res.status(400).json({ 
                 success: false,
                 message: "Please upload the resume or provide all required fields.",
             });

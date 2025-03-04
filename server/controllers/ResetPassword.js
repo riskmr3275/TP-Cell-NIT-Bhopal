@@ -1,99 +1,99 @@
-const {ResetPasswordLink}=require("../Mail/Template/ResetPasswordLink")
-const {connect} = require("../config/database")
-const mailSender = require("../utils/mailSender")
-const bcrypt = require("bcryptjs")
-const crypto=require("crypto")
+const { ResetPasswordLink } = require("../Mail/Template/ResetPasswordLink");
+const mailSender = require("../utils/mailSender");
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+const { pool } = require("../config/database");
 
-// resetPassworToken
 exports.resetPasswordToken = async (req, res) => {
-    let connection;
     try {
         const email = req.body.email;
-        connection = await connect();   
-        // check exitence of user
-        const [response] = await connection.execute("SELECT * FROM student_details WHERE s_email = ?", [email]);
-        if (response.length === 0) {    
+        
+        // Check existence of user
+        const userQuery = "SELECT * FROM student_details WHERE s_email = $1";
+        const userResult = await pool.query(userQuery, [email]);
+        
+        if (userResult.rows.length === 0) {
             return res.status(400).json({
                 success: false,
                 message: "Your Account is not registered"
-            })
+            });
         }
-        // generate token
-        const token = crypto.randomUUID();
-        const [updateDetails] = await connection.execute("UPDATE users SET token = ?, resetPasswordExpires = ? WHERE email = ?", [token, Date.now() + 5 * 60 * 1000, email]); 
 
-        // Frontnd ka url genrate kara
-        const url = `http://localhost:4000/update-password/${token}`
-        // ab mail send karte hai user ke email pe url ke sath
-        await mailSender(email, "Reset passwrod link", ResetPasswordLink(url))
-        await connection.end();
+        // Generate token
+        const token = crypto.randomUUID();
+        const expirationTime = Date.now() + 5 * 60 * 1000;
+
+        const updateQuery = "UPDATE users SET token = $1, reset_password_expires = $2 WHERE email = $3";
+        await pool.query(updateQuery, [token, expirationTime, email]);
+
+        const url = `http://localhost:4000/update-password/${token}`;
+        await mailSender(email, "Reset password link", ResetPasswordLink(url));
+
         return res.status(200).json({
             success: true,
-            message: "Email Sent successfully,please check email",
-            token:token,
-            usl:url
-        })
-
+            message: "Email Sent successfully, please check email",
+            token,
+            url
+        });
     } catch (error) {
-        console.log("error form the reset password", error);
+        console.error("Error from the reset password", error);
         return res.status(500).json({
             success: false,
-            message: "Something went wrong while reset the password",
-            error:error.message
-        })
+            message: "Something went wrong while resetting the password",
+            error: error.message
+        });
     }
-}
-
+};
 
 exports.resetPassword = async (req, res) => {
-   
-    let connection;
     try {
-        // data fetch
         const { password, confirmPassword, token } = req.body;
-        // valodation
-        if (password != confirmPassword) {
-            return res.json({
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({
                 success: false,
-                message: "Both Password must be same"
-            })
+                message: "Both passwords must be the same"
+            });
         }
-        // get userdetail from db using token
-        const userDetails = await User.findOne({ token: token })
-        // if no entry envalid tiken
+
+        // Get user details from DB using token
+        const tokenQuery = "SELECT * FROM users WHERE token = $1";
+        const tokenResult = await pool.query(tokenQuery, [token]);
+        const userDetails = tokenResult.rows[0];
+
         if (!userDetails) {
             return res.status(400).json({
                 success: false,
                 message: "Token is invalid"
-            })
+            });
         }
-        // token time check
-        if (userDetails.resetPasswordExpires < Date.now()) {
-            return res.json({
+
+        if (userDetails.reset_password_expires < Date.now()) {
+            return res.status(400).json({
                 success: false,
-                message: "Token is expired, please generate it again"
-            })
+                message: "Token has expired, please generate it again"
+            });
         }
-        // hash password
-        const hashedPassword = await bcrypt.hash(password, 10)
-        // password update
-        const user=await User.findOne({token:token})
-        await User.findOneAndUpdate({ token: token }, { password: hashedPassword }, { new: true })
-        // return response
-        await mailSender(user.email,"Your Password is reset",passwordSuccess(user.firstName,user.email))
-        await connection.end();
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        // Update password in database
+        const updatePasswordQuery = "UPDATE users SET password = $1, token = NULL, reset_password_expires = NULL WHERE token = $2";
+        await pool.query(updatePasswordQuery, [hashedPassword, token]);
+
+        await mailSender(userDetails.email, "Your Password is reset", passwordSuccess(userDetails.first_name, userDetails.email));
+
         return res.status(200).json({
             success: true,
-            message: "Password reset Successfully"
-        })
-    } catch (error) {
-        console.log("Error occure from resetPassword token", error);
-        return res.status(401).json({
+            message: "Password reset successfully"
+        });
+    } catch (error) { 
+        console.error("Error occurred in resetPassword", error);
+        return res.status(500).json({
             success: false,
-            message: "Something went wrong while  reseting the password",
-            error:error.message
-        })
+            message: "Something went wrong while resetting the password",
+            error: error.message
+        });
     }
-
-
-}
+};
