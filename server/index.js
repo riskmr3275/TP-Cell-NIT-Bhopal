@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
  
 app.use(cors({
-    origin:"https://tp-cell-nit-bhopal-india-re1mmimgh-risu-guptas-projects.vercel.app/",
+    origin:"https://tp-cell-nit-bhopal-india-git-master-risu-guptas-projects.vercel.app/",
     credentials:true,
 }))
 
