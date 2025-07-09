@@ -1,4 +1,4 @@
-const BASE_URL = "https://server-qrb9.onrender.com/api/v1"   //deployed backend base url
+const BASE_URL = "https://tp-cell-nit-bhopal.onrender.com/api/v1"   //deployed backend base url
 
 
 // AUTH ENDPOINTS
