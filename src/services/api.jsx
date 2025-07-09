@@ -52,10 +52,14 @@ export const ratingsEndpoints = {
 
 // JobPost API
 export const jobpost = {
+  GETALL_JOB_BYID:BASE_URL+"/applications/getAllAplicationsByJobId",
+  ADD_JOB:BASE_URL+"/applications/applicationForCord",
   GETALLJOBPOST_API: BASE_URL + "/jobposting/getAllJoblistings",
   APLLYJOB_API: BASE_URL + "/job/applyJob",
   GETALLJOBAPPLIED_API: BASE_URL + "/job/getAllApplyJobs",
   DELETEJOB_API: BASE_URL + "/job/deleteApplyJobById",
+  GETJOB_CORDI:BASE_URL+ "/applications/applicationForCord",
+  POSTJOB:BASE_URL+"/jobposting/postJoblistings"
 }
 
 // CATALOG PAGE DATA
@@ -78,4 +82,14 @@ export const settingsEndpoints = {
 export const companyEndpoints = {
   GET_ALLCOMPANYLSIT_API: BASE_URL + "/companies/getAllComapnyDetails",
   ADD_COMPANYLIST_API: BASE_URL + "/companies/addComapnyDetails",
+}
+
+
+
+export const userEnpoints={
+  getAll_User:BASE_URL+"/auth/getAllUser",
+  getAll_Company:BASE_URL+"/companies/getAllComapny",
+  getALl_Job_Post:BASE_URL+"/jobposting/getJob",
+  getAll_Aplli:BASE_URL+"/applications/getAllAplication",
+  getAll_Schedule:BASE_URL+"/applications/getAllInterviewSchedule"
 }

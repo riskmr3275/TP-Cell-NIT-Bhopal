@@ -79,7 +79,7 @@ exports.signup = async (req, res) => {
             accountType,
             otp
         } = req.body;
-
+        console.log("Sinpup Data ",req.body)
         if (!first_name || !last_name || !email || !password || !confirmPassword || !accountType || !otp || !user_id) {
             return res.status(403).json({
                 success: false,

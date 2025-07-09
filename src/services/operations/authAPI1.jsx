@@ -126,9 +126,9 @@ export function login(email, password, navigate) {
 
       localStorage.setItem("token", JSON.stringify(response.data?.token));
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      if(response.data?.user?.accountType === "Student"){
+      if(response.data?.user?.account_type === "Student"){
         navigate("/dashboard/recentjob");}
-        else if(response.data?.user?.accountType === "Coordinator"){
+        else if(response.data?.user?.account_type === "Coordinator"){
           navigate("/dashboard/overview");
         }
     } catch (error) {

@@ -13,23 +13,23 @@ const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const jobRoutes = require("./routes/JobPostings");
 const cors = require("cors");
- 
-
+   
+    
 const app = express();
 database.connect();
 app.use(fileUpload({
     useTempFiles: true, 
     tempFileDir: "/tmp"
 }));
-cloudinaryConnect();
+cloudinaryConnect();   
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser());  
  
 app.use(cors({
-    origin:"https://tp-cell-nit-bhopal-india-git-master-risu-guptas-projects.vercel.app/",
+    origin:"http://localhost:3000",
     credentials:true,
-}))
-
+}))      
+  
 app.use('/api/v1/auth', userRoutes);
 app.use('/api/v1/applications', applicationsRoutes);
 app.use('/api/v1/companies', companiesRoutes);
@@ -40,7 +40,7 @@ app.use('/api/v1/currAcademics', currAcademicsRoutes);
 app.use('/api/v1/job', applyJobRoutes);
 
 app.get("/", (req, res) => {
-    return res.json({
+    return res.json({  
         success: true,
         message: "Your server is up and running.............."
     });

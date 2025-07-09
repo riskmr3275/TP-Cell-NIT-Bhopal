@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id          Int              @id @default(autoincrement())
+  name             String
+  email            String           @unique
+  password         String
+  phone            String?           @default("1234567890")
+  department       String?
+  last_login       DateTime?        @default(now())
+  account_status   Int?
+  address_street   String?
+  city             String?
+  state            String?
+  gender           String?           
+  dob              DateTime?         @default("2000-01-01T00:00:00Z")
+  about            String?
+  photo_url        String?
+  token            String?
+  reset_pass_expires DateTime?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+  account_type     String?
+
+  companies        Company[]        @relation("Coordinator")
+  academicDetails  AcademicDetail[]
+  currAcademics    CurrAcademic[]
+  academicGaps     AcademicGap[]
+  feedbacks        Feedback[]       @relation("StudentFeedback")
+  jobPostings      JobPosting[]
+  applications     Application[]
+  placements       PlaceDetail[]
+
+  @@map("users")
+}
+
+model Company {
+  company_id       Int              @id @default(autoincrement())
+  coordinator_id   Int?
+  company_name     String
+  industry         String?
+  website          String?
+  address          String?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+  coordinator      User?            @relation("Coordinator", fields: [coordinator_id], references: [user_id])
+  feedbacks        Feedback[]       @relation("CompanyFeedback")
+  jobPostings      JobPosting[]
+  schedules        PlacementSchedule[]
+
+  @@map("companies")
+}
+
+model AcademicDetail {
+  academic_id      Int              @id @default(autoincrement())
+  user_id          Int?
+  class            String?
+  specialization   String?
+  institute        String?
+  board            String?
+  yop              Int?
+  percentage       Decimal?         @db.Decimal(5, 2)
+  certificate_url  String?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  user             User?            @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@map("academic_details")
+}
+
+model CurrAcademic {
+  academic_id      Int              @id @default(autoincrement())
+  user_id          Int
+  degree           String
+  branch           String
+  sgpa             Json?
+  cgpa             Decimal?         @db.Decimal(3, 2)
+  backlogs         Int?
+  resume           Bytes?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  user             User             @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@map("curr_academics")
+}
+
+model OtpTable {
+  email_id         String           @id
+  otp              Int?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  @@map("otp_table")
+}
+
+model AcademicGap {
+  gap_id           Int              @id @default(autoincrement())
+  user_id          Int?
+  gap_duration     Int?
+  reason           String?
+
+  user             User?            @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@map("academic_gaps")
+}
+
+model ContactUs {
+  contact_id       Int              @id @default(autoincrement())
+  full_name        String?
+  mobile_no        String?
+  email_id         String?
+  message          String?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  @@map("contact_us")
+}
+
+model Feedback {
+  feedback_id      Int              @id @default(autoincrement())
+  company_id       Int?
+  student_id       Int?
+  comments         String?
+  rating           Int?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  company          Company?         @relation("CompanyFeedback", fields: [company_id], references: [company_id], onDelete: SetNull)
+  student          User?            @relation("StudentFeedback", fields: [student_id], references: [user_id], onDelete: SetNull)
+
+  @@map("feedback")
+}
+
+model JobPosting {
+  job_id           Int              @id @default(autoincrement())
+  job_title        String
+  job_description  String?
+  eligibility      Json
+  salary           Decimal          @db.Decimal(10, 2)
+  location         String
+  application_deadline DateTime
+  application_post_date DateTime
+  company_id       Int
+  user_id          Int?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  company          Company          @relation(fields: [company_id], references: [company_id], onDelete: Cascade)
+  user             User?            @relation(fields: [user_id], references: [user_id], onDelete: SetNull)
+  applications     Application[]
+  placements       PlaceDetail[]
+
+  @@map("job_postings")
+}
+
+model Application {
+  application_id   Int              @id @default(autoincrement())
+  job_id           Int?
+  student_id       Int?
+  submission_date  DateTime?
+  status           String           @default("submitted")
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  job              JobPosting?      @relation(fields: [job_id], references: [job_id], onDelete: Cascade)
+  student          User?            @relation(fields: [student_id], references: [user_id], onDelete: Cascade)
+
+  @@map("applications")
+}
+
+model PlaceDetail {
+  place_id         Int              @id
+  student_id       Int
+  job_id           Int
+  offer_letter_no  Int?
+  offer_letter_date DateTime?
+  offer_letter     Bytes?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  student          User             @relation(fields: [student_id], references: [user_id])
+  job              JobPosting       @relation(fields: [job_id], references: [job_id])
+
+  @@map("place_details")
+}
+
+model PlacementSchedule {
+  schedule_id      Int              @id @default(autoincrement())
+  company_id       Int?
+  date             DateTime?
+  location         String?
+  rounds           Int?
+  coordinator_id   Int?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  company          Company?         @relation(fields: [company_id], references: [company_id], onDelete: Cascade)
+
+  @@map("placement_schedules")
+}

@@ -74,7 +74,7 @@ exports.getJobListingById = async (req, res) => {
 exports.postJoblistings = async (req, res) => {
     const user_id = req.user.id;
     const { company_id } = req.body;
-    console.log("mohti")
+  
     console.log(company_id)
         const { job_title, job_description, eligibility, salary, location, application_deadline, application_post_date } = req.body;
 

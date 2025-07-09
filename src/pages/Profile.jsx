@@ -27,18 +27,22 @@ const Profile = () => {
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]);
   };
-  console.log("user", formData);
+  
 
   const handleImageUpload = async () => {
     if (!selectedImage) return alert("Please select an image");
-    // API call to upload the image
-    // const formData = new FormData();
-    // formData.append("displayPicture", selectedImage);
-    console.log("selectedImage", selectedImage);
- 
-   dispatch(uploadProfileImage(selectedImage, token,navigate));
+  
+    const imageData = new FormData();
+    imageData.append("displayPicture", selectedImage);
+  
+    console.log("Uploading image:", selectedImage.name); // Debug
+    console.log("Formdata from profile rexr",formData,token)
+    
+    dispatch(uploadProfileImage(imageData, token, navigate));
   };
-
+  
+  
+  console.log("Formdata from profile rexr",formData,token)
   const handleChangePassword = (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {

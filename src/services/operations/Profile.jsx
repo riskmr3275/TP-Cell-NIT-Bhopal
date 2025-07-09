@@ -29,33 +29,23 @@ export async function changePassword(formData, token) {
   }
 }
 
-export function uploadProfileImage(selectedImage, token, navigate) {
-  return async (dispatch) => {
-    const toastId = toast.loading("Loading...");
-    dispatch(setLoading(true));
-    try {
-      const response = await apiConnector(
-        "PUT",
-        UPDATE_DISPLAY_PICTURE_API,
-        selectedImage,
-        {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        }
-      );
-      console.log("Upload Success RESPONSE:", response);
+export const uploadProfileImage = (imageData, token, navigate) => async (dispatch) => {
+  try {
+    console.log("Formdata from profile change",imageData[0],token)
+    const response = await apiConnector("PUT",
+      settingsEndpoints.UPDATE_DISPLAY_PICTURE_API,
+      imageData,
+      {
+        Authorization: `Bearer ${token}`,
+      });
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
-      }
-
-      toast.success("Profile Uploaded Successfully");
-    } catch (error) {
-      console.log("Profile Upload ERROR:", error);
-      toast.error("Failed to upload profile image");
-    } finally {
-      toast.dismiss(toastId);
-      dispatch(setLoading(false));
+    if (response.data.success) {
+      toast.success("Profile photo updated");
+      navigate("/dashboard/profile"); // or wherever you want
     }
-  };
-}
+  } catch (error) {
+    console.error("Image Upload Failed:", error);
+    toast.error("Failed to upload image");
+  }
+};
+

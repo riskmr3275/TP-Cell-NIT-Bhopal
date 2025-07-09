@@ -74,7 +74,7 @@ function CompanyManagement() {
     dispatch(getCompanyList(token, navigate));
   }, [navigate]);
 
-  console.log("Company List", companyData);
+  console.log("Company List ", companyData);
   return (
     <div className="p-6 bg-white w-full">
       {/* Top Section: Search and Add Company */}

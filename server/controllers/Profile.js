@@ -29,6 +29,8 @@ exports.updateProfile = async (req, res) => {
     } catch (error) {
         console.error("Error updating profile: ", error);
         return res.status(500).json({ success: false, message: error.message });
+    }finally {
+      client.release(); // ✅
     }
 };
 
@@ -50,9 +52,11 @@ exports.deleteAccount = async (req, res) => {
         client.release();
 
         return res.status(200).json({ success: true, message: "Account deleted successfully" });
-    } catch (error) {
+    } catch (error) {  
         console.error("Error deleting account: ", error);
         return res.status(500).json({ success: false, message: error.message });
+    }finally {
+      client.release(); // ✅
     }
 };
 
@@ -73,37 +77,52 @@ exports.getAllUserDetails = async (req, res) => {
     } catch (error) {
         console.error("Error fetching user details: ", error);
         return res.status(500).json({ success: false, message: "User not found" });
+    }finally {
+      client.release(); // ✅
     }
 };
 
 // ++++++++++++++Update Display Picture++++++++++++++++++++++++++++++++++++++++++++++
 exports.updateDisplayPicture = async (req, res) => {
     try {
-        const imageUrl = req.files.displayPicture;
-        const id = req.user.id;
-
-        if (!imageUrl || !id) {
-            return res.status(400).json({ success: false, message: "Please upload the image or all fields are required." });
-        }
-
-        const client = await pool.connect();
-        const userQuery = "SELECT * FROM users WHERE user_id = $1";
-        const userResult = await client.query(userQuery, [id]);
-
-        if (userResult.rows.length === 0) {
-            client.release();
-            return res.status(404).json({ success: false, message: "User not found" });
-        }
-
-        const finalImageUrl = await uploadMediaToCloudinary(imageUrl, process.env.FOLDER_NAME, 1000, 1000);
-        const updateQuery = "UPDATE users SET photo_url = $1 WHERE user_id = $2";
-        await client.query(updateQuery, [finalImageUrl.secure_url, id]);
-        client.release();
-
-        await mailSender(req.user.email, "Update Successfully", ProfilePicUpdate());
-        return res.status(200).json({ success: true, message: "Image updated successfully", imageUrl: finalImageUrl.secure_url });
+      const imageFile = req.files?.displayPicture;
+      const id = req.user.id;
+  
+      if (!imageFile || !id) {
+        return res.status(400).json({
+          success: false,
+          message: "Please upload the image and ensure user is authenticated.",
+        });
+      }
+  
+      const finalImageUrl = await uploadMediaToCloudinary(
+        imageFile,
+        process.env.FOLDER_NAME,
+        1000,
+        1000
+      );
+  
+      const client = await pool.connect();
+      const updateQuery = "UPDATE users SET photo_url = $1 WHERE user_id = $2";
+      await client.query(updateQuery, [finalImageUrl.secure_url, id]);
+      client.release();
+  
+      await mailSender(req.user.email, "Profile Updated", ProfilePicUpdate());
+  
+      return res.status(200).json({
+        success: true,
+        message: "Profile picture updated successfully.",
+        imageUrl: finalImageUrl.secure_url,
+      });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ success: false, message: "Can't upload image right now, try again later.", error: error.message });
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        message: "Image upload failed.",
+        error: error.message,
+      });
+    }finally {
+      client.release(); // ✅
     }
-};
+  };
+  

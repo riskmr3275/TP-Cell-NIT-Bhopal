@@ -11,6 +11,8 @@ import DropdownMenu from "../common/DropdownMenu";
 import ChartContainer from "../common/ChartContainer"; // Importing ChartContainer
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { userEnpoints } from "../../services/api";
+import { use } from "react";
 
 const recentActivities = [
   {
@@ -103,27 +105,27 @@ export default function CoordinatorOverview() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/auth/getAllUser"
+          userEnpoints.getAll_User
         );
 
         setStuCount(response.data.count); // assuming `response.data` is an array of users
         const response1 = await axios.get(
-          "http://localhost:4000/api/v1/companies/getAllComapny"
+          userEnpoints.getAll_Company
         );
         setCompanyCount(response1.data.count); // assuming `response.data` is an array of users
         const response3 = await axios.get(
-          "http://localhost:4000/api/v1/jobposting/getJob"
+          userEnpoints.getALl_Job_Post
         );
         setJobCount(response3.data.count); // assuming `response.data` is an array of users
 
         const response4 = await axios.get(
-          "http://localhost:4000/api/v1/applications/getAllAplication"
+          userEnpoints.getAll_Aplli
         );
         setTotalApplications(response4.data.count);
 
         // fetch dta for interview
         const response5 = await axios.get(
-          "http://localhost:4000/api/v1/applications/getAllInterviewSchedule"
+          userEnpoints.getAll_Schedule
         );
         setUpcomingInterviews(response5.data.data);
       } catch (error) {
